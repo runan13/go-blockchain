@@ -1,7 +1,9 @@
 package main
 
-import "awesomeProject/explorer"
+import (
+	"awesomeProject/rest"
+)
 
 func main() {
-	explorer.Start()
+	rest.Start(4000)
 }
