@@ -2,14 +2,13 @@ package db
 
 import (
 	"awesomeProject/utils"
-	"fmt"
 	"github.com/boltdb/bolt"
 )
 
 var db *bolt.DB
 
 const (
-	dbName       = "blockcahin.db"
+	dbName       = "blockchain.db"
 	dataBucket   = "data"
 	blocksBucket = "blocks"
 )
@@ -33,7 +32,6 @@ func DB() *bolt.DB {
 }
 
 func SaveBlock(hash string, data []byte) {
-	fmt.Printf("Saving Block %s\nData: %b", hash, data)
 	err := DB().Update(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket([]byte(blocksBucket))
 		err := bucket.Put([]byte(hash), data)

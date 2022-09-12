@@ -1,6 +1,8 @@
 package blockchain
 
 import (
+	"awesomeProject/db"
+	"awesomeProject/utils"
 	"sync"
 )
 
@@ -12,10 +14,15 @@ type blockchain struct {
 var b *blockchain
 var once sync.Once
 
+func (b *blockchain) Persist() {
+	db.SaveBlockchain(utils.ToBytes(b))
+}
+
 func (b *blockchain) AddBlock(data string) {
-	block := createBlock(data, b.NewestHash, b.Height)
+	block := createBlock(data, b.NewestHash, b.Height+1)
 	b.NewestHash = block.Hash
 	b.Height = block.Height
+	b.Persist()
 }
 
 func Blockchain() *blockchain {
