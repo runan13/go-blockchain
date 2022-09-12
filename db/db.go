@@ -2,6 +2,7 @@ package db
 
 import (
 	"awesomeProject/utils"
+	"fmt"
 	"github.com/boltdb/bolt"
 )
 
@@ -29,4 +30,23 @@ func DB() *bolt.DB {
 		utils.HandleError(err)
 	}
 	return db
+}
+
+func SaveBlock(hash string, data []byte) {
+	fmt.Printf("Saving Block %s\nData: %b", hash, data)
+	err := DB().Update(func(tx *bolt.Tx) error {
+		bucket := tx.Bucket([]byte(blocksBucket))
+		err := bucket.Put([]byte(hash), data)
+		return err
+	})
+	utils.HandleError(err)
+}
+
+func SaveBlockchain(data []byte) {
+	err := DB().Update(func(tx *bolt.Tx) error {
+		bucket := tx.Bucket([]byte(dataBucket))
+		err := bucket.Put([]byte("checkpoint"), data)
+		return err
+	})
+	utils.HandleError(err)
 }
