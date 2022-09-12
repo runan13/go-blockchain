@@ -1,9 +1,7 @@
 package main
 
-import (
-	"awesomeProject/rest"
-)
+import "awesomeProject/cli"
 
 func main() {
-	rest.Start(4000)
+	cli.Start()
 }
