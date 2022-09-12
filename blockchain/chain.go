@@ -3,6 +3,9 @@ package blockchain
 import (
 	"awesomeProject/db"
 	"awesomeProject/utils"
+	"bytes"
+	"encoding/gob"
+	"fmt"
 	"sync"
 )
 
@@ -13,6 +16,11 @@ type blockchain struct {
 
 var b *blockchain
 var once sync.Once
+
+func (b *blockchain) restore(data []byte) {
+	decoder := gob.NewDecoder(bytes.NewReader(data))
+	utils.HandleError(decoder.Decode(b))
+}
 
 func (b *blockchain) Persist() {
 	db.SaveBlockchain(utils.ToBytes(b))
@@ -29,8 +37,17 @@ func Blockchain() *blockchain {
 	if b == nil {
 		once.Do(func() {
 			b = &blockchain{"", 0}
-			b.AddBlock("Genesis")
+			fmt.Printf("NewestHash: %s\nHeight: %d\n", b.NewestHash, b.Height)
+			checkpoint := db.Checkpoint()
+			if checkpoint == nil {
+				fmt.Println("Initializing...")
+				b.AddBlock("Genesis")
+			} else {
+				fmt.Println("Restoring...")
+				b.restore(checkpoint)
+			}
 		})
 	}
+	fmt.Printf("NewestHash: %s\nHeight: %d\n", b.NewestHash, b.Height)
 	return b
 }
