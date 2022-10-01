@@ -5,7 +5,7 @@ import (
 	"awesomeProject/rest"
 	"flag"
 	"fmt"
-	"os"
+	"runtime"
 )
 
 func usage() {
@@ -13,7 +13,7 @@ func usage() {
 	fmt.Printf("Please use the following flags: \n\n")
 	fmt.Printf("-restPort: Set the port of REST API\n")
 	fmt.Printf("-explorerPort: Set the port of Explorer\n")
-	os.Exit(0)
+	runtime.Goexit()
 }
 
 func Start() {
