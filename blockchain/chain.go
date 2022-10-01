@@ -3,8 +3,6 @@ package blockchain
 import (
 	"awesomeProject/db"
 	"awesomeProject/utils"
-	"bytes"
-	"encoding/gob"
 	"fmt"
 	"sync"
 )
@@ -18,8 +16,7 @@ var b *blockchain
 var once sync.Once
 
 func (b *blockchain) restore(data []byte) {
-	decoder := gob.NewDecoder(bytes.NewReader(data))
-	utils.HandleError(decoder.Decode(b))
+	utils.FromBytes(b, data)
 }
 
 func (b *blockchain) Persist() {
