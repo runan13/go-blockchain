@@ -17,8 +17,8 @@ type Tx struct {
 }
 
 type TxIn struct {
-	Owner  string
-	Amount int
+	Owner  string `json:"owner"`
+	Amount int    `json:"amount"`
 }
 
 func (t *Tx) getId() {
@@ -26,8 +26,8 @@ func (t *Tx) getId() {
 }
 
 type TxOut struct {
-	Owner  string
-	Amount int
+	Owner  string `json:"owner"`
+	Amount int    `json:"amount"`
 }
 
 func makeCoinbaseTx(address string) *Tx {
